@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiFilter } from 'react-icons/fi';
 import TaskCard from './TaskCard';
 import { SearchBar, FilterDropdown, SortDropdown, EmptyState, Loader, Button, Badge } from '../common';
@@ -10,6 +11,7 @@ const TaskList = ({
   isLoading = false,
   className = ''
 }) => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterPriority, setFilterPriority] = useState('all');
@@ -50,7 +52,7 @@ const TaskList = ({
           comparison = new Date(b.createdAt) - new Date(a.createdAt);
           break;
         case 'priority':
-          const priorityOrder = { high: 3, medium: 2, low: 1 };
+          const priorityOrder = { High: 3, Medium: 2, Low: 1 };
           comparison = priorityOrder[b.priority] - priorityOrder[a.priority];
           break;
         case 'title':
@@ -81,6 +83,8 @@ const TaskList = ({
 
   // Empty state
   if (filteredAndSortedTasks.length === 0) {
+    const hasFilters = searchQuery || filterStatus !== 'all' || filterPriority !== 'all';
+
     return (
       <div className={className}>
         <EmptyState
@@ -93,9 +97,13 @@ const TaskList = ({
             ? "Clear Filters"
             : "Create Task"}
           onAction={() => {
-            setSearchQuery('');
-            setFilterStatus('all');
-            setFilterPriority('all');
+            if (hasFilters) {
+              setSearchQuery('');
+              setFilterStatus('all');
+              setFilterPriority('all');
+            } else {
+              navigate('/create-task');
+            }
           }}
         />
       </div>

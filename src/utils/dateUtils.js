@@ -56,6 +56,6 @@ export const formatRelativeTime = (dateString) => {
  * @returns {boolean} Whether the task is overdue
  */
 export const isOverdue = (dateString, status) => {
-  if (status === 'completed') return false;
+  if (status === 'Completed') return false;
   return new Date(dateString) < new Date();
 };

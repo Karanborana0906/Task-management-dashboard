@@ -84,11 +84,12 @@ const Dashboard = () => {
       color: "success",
       trend: { value: 0, positive: true },
     },
+    { title: "Pending", value: tasks.filter((t) => t.status === "Pending").length, icon: FiClock, color: "warning" },
+    { title: "In Progress", value: tasks.filter((t) => t.status === "In Progress").length, icon: FiCalendar, color: "primary" },
+    { title: "Completed", value: tasks.filter((t) => t.status === "Completed").length, icon: FiCheckCircle, color: "success" },
   ];
 
-
   const handleEdit = (taskId) => {
-    console.log('Edit task:', taskId);
     navigate(`/edit-task/${taskId}`);
   };
 
@@ -104,18 +105,17 @@ const Dashboard = () => {
     <MainLayout>
       <div className="p-4 sm:p-6">
         <div className="max-w-7xl mx-auto">
-          {/* Top Section */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-1">
-                Welcome back, {user?.name || 'User'}!
+              <h1 className="text-3xl font-bold">
+                Welcome back, {user?.name}!
               </h1>
-              <p className="text-sm sm:text-base text-neutral-600">{currentDate}</p>
+              <p>{currentDate}</p>
             </div>
           </div>
 
-          {/* Statistics Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {stats.map((stat, index) => (
               <StatCard key={index} {...stat} />
             ))}
