@@ -5,6 +5,7 @@ import MainLayout from '../layouts/MainLayout';
 import TaskForm from '../components/task/TaskForm';
 import { PageHeading, Button, Breadcrumb } from '../components/common';
 import toast from 'react-hot-toast';
+import taskApi from '../services/taskApi';
 
 const CreateTask = () => {
   const navigate = useNavigate();
@@ -12,14 +13,16 @@ const CreateTask = () => {
 
   const handleSubmit = async (formData) => {
     setIsLoading(true);
-    
-    // Dummy submit function
-    setTimeout(() => {
-      console.log('Create task submitted:', formData);
-      setIsLoading(false);
+    try {
+      await taskApi.createTask(formData);
       toast.success('Task created successfully!');
       navigate('/dashboard');
-    }, 1500);
+    } catch (error) {
+      const message = error?.response?.data?.message || 'Failed to create task. Please try again.';
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCancel = () => {

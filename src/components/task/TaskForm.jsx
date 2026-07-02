@@ -11,8 +11,8 @@ const TaskForm = ({
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    priority: 'medium',
-    status: 'todo',
+    priority: 'Medium',
+    status: 'Pending',
     dueDate: '',
   });
   const [errors, setErrors] = useState({});
@@ -24,9 +24,11 @@ const TaskForm = ({
       setFormData({
         title: initialData.title || '',
         description: initialData.description || '',
-        priority: initialData.priority || 'medium',
-        status: initialData.status || 'todo',
-        dueDate: initialData.dueDate || '',
+        priority: initialData.priority || 'Medium',
+        status: initialData.status || 'Pending',
+        dueDate: initialData.dueDate
+          ? new Date(initialData.dueDate).toISOString().split('T')[0]
+          : '',
       });
     }
   }, [initialData]);
@@ -203,9 +205,9 @@ const TaskForm = ({
               value={formData.priority}
               onChange={handleChange}
             >
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
             </Select>
           </div>
 
@@ -219,9 +221,9 @@ const TaskForm = ({
               value={formData.status}
               onChange={handleChange}
             >
-              <option value="todo">Todo</option>
-              <option value="in_progress">In Progress</option>
-              <option value="completed">Completed</option>
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
             </Select>
           </div>
         </div>

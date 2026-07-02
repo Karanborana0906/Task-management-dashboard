@@ -11,15 +11,15 @@ const FilterDropdown = ({
   const filterOptions = {
     status: [
       { value: 'all', label: 'All Status' },
-      { value: 'todo', label: 'Pending' },
-      { value: 'in_progress', label: 'In Progress' },
-      { value: 'completed', label: 'Completed' },
+      { value: 'Pending', label: 'Pending' },
+      { value: 'In Progress', label: 'In Progress' },
+      { value: 'Completed', label: 'Completed' },
     ],
     priority: [
       { value: 'all', label: 'All Priorities' },
-      { value: 'high', label: 'High' },
-      { value: 'medium', label: 'Medium' },
-      { value: 'low', label: 'Low' },
+      { value: 'High', label: 'High' },
+      { value: 'Medium', label: 'Medium' },
+      { value: 'Low', label: 'Low' },
     ],
   };
 
