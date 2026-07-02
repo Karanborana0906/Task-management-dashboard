@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import authApi from "../services/authApi";
 
 const AuthContext = createContext(null);
 
@@ -11,11 +12,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
-    
+
     if (storedToken) {
       setToken(storedToken);
     }
-    
+
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
@@ -24,38 +25,31 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('user');
       }
     }
-    
+
     setIsLoading(false);
   }, []);
 
   // Login function
   const login = async (credentials) => {
     try {
-      // TODO: Replace with actual API call when backend is ready
-      // const response = await authApi.login(credentials);
-      // const { token, user } = response.data;
-      
-      // Dummy implementation for architecture
-      const dummyToken = 'dummy-jwt-token-' + Date.now();
-      const dummyUser = {
-        id: 1,
-        name: credentials.name || 'John Doe',
-        email: credentials.email,
-        role: 'user',
-      };
-      
-      // Store in state
-      setToken(dummyToken);
-      setUser(dummyUser);
-      
-      // Persist in localStorage
-      localStorage.setItem('token', dummyToken);
-      localStorage.setItem('user', JSON.stringify(dummyUser));
-      
-      return { success: true, user: dummyUser };
+      const response = await authApi.login(credentials);
+
+      const userData = response.data.data;
+      const token = userData.token;
+
+      setToken(token);
+      setUser(userData);
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      return { success: true };
     } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error:
+          error.response?.data?.message || "Login failed",
+      };
     }
   };
 
@@ -64,11 +58,11 @@ export const AuthProvider = ({ children }) => {
     // Clear state
     setToken(null);
     setUser(null);
-    
+
     // Clear localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    
+
     // TODO: Call logout API when backend is ready
     // await authApi.logout();
   };
@@ -76,31 +70,24 @@ export const AuthProvider = ({ children }) => {
   // Register function
   const register = async (userData) => {
     try {
-      // TODO: Replace with actual API call when backend is ready
-      // const response = await authApi.register(userData);
-      // const { token, user } = response.data;
-      
-      // Dummy implementation for architecture
-      const dummyToken = 'dummy-jwt-token-' + Date.now();
-      const dummyUser = {
-        id: 1,
-        name: userData.name,
-        email: userData.email,
-        role: 'user',
-      };
-      
-      // Store in state
-      setToken(dummyToken);
-      setUser(dummyUser);
-      
-      // Persist in localStorage
-      localStorage.setItem('token', dummyToken);
-      localStorage.setItem('user', JSON.stringify(dummyUser));
-      
-      return { success: true, user: dummyUser };
+      const response = await authApi.register(userData);
+
+      const newUser = response.data.data;
+      const token = newUser.token;
+
+      setToken(token);
+      setUser(newUser);
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(newUser));
+
+      return { success: true };
     } catch (error) {
-      console.error('Registration error:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error:
+          error.response?.data?.message || "Registration failed",
+      };
     }
   };
 

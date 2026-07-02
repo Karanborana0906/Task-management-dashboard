@@ -3,14 +3,14 @@ import { FiEdit2, FiTrash2, FiCalendar, FiClock } from 'react-icons/fi';
 import { Card, Badge, Button } from '../common';
 import { formatDate, isOverdue } from '../../utils/dateUtils';
 
-const TaskCard = ({ 
+const TaskCard = ({
   task,
   onEdit,
   onDelete,
   className = ''
 }) => {
   const {
-    id,
+    _id,
     title,
     description,
     priority,
@@ -20,20 +20,18 @@ const TaskCard = ({
   } = task;
 
   const priorityColors = {
-    low: 'secondary',
-    medium: 'warning',
-    high: 'danger',
+    Low: "secondary",
+    Medium: "warning",
+    High: "danger",
   };
 
   const statusColors = {
-    todo: 'secondary',
-    in_progress: 'primary',
-    completed: 'success',
+    Pending: "warning",
+    "In Progress": "primary",
+    Completed: "success",
   };
 
-  const formatStatus = (status) => {
-    return status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
-  };
+  { status }
 
   const taskIsOverdue = isOverdue(dueDate, status);
 
@@ -44,10 +42,10 @@ const TaskCard = ({
         <h3 className="text-base sm:text-lg font-semibold text-neutral-900 flex-1 leading-tight line-clamp-2">{title}</h3>
         <div className="flex items-center gap-2 flex-shrink-0">
           <Badge variant={priorityColors[priority] || 'secondary'}>
-            {priority.charAt(0).toUpperCase() + priority.slice(1)}
+            {priority}
           </Badge>
           <Badge variant={statusColors[status] || 'secondary'}>
-            {formatStatus(status)}
+            {status}
           </Badge>
         </div>
       </div>
@@ -75,7 +73,7 @@ const TaskCard = ({
         <Button
           variant="secondary"
           size="sm"
-          onClick={() => onEdit(id)}
+          onClick={() => onEdit(_id)}
           className="flex-1 flex items-center justify-center gap-2 min-w-0"
         >
           <FiEdit2 className="text-sm flex-shrink-0" />
@@ -84,7 +82,7 @@ const TaskCard = ({
         <Button
           variant="danger"
           size="sm"
-          onClick={() => onDelete(id)}
+          onClick={() => onDelete(_id)}
           className="flex-1 flex items-center justify-center gap-2 min-w-0"
         >
           <FiTrash2 className="text-sm flex-shrink-0" />

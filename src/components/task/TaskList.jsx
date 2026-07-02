@@ -3,12 +3,12 @@ import { FiFilter } from 'react-icons/fi';
 import TaskCard from './TaskCard';
 import { SearchBar, FilterDropdown, SortDropdown, EmptyState, Loader, Button, Badge } from '../common';
 
-const TaskList = ({ 
-  tasks = [], 
-  onEdit, 
+const TaskList = ({
+  tasks = [],
+  onEdit,
   onDelete,
   isLoading = false,
-  className = '' 
+  className = ''
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -41,7 +41,7 @@ const TaskList = ({
     // Apply sorting
     filtered.sort((a, b) => {
       let comparison = 0;
-      
+
       switch (sortBy) {
         case 'dueDate':
           comparison = new Date(a.dueDate) - new Date(b.dueDate);
@@ -86,11 +86,11 @@ const TaskList = ({
         <EmptyState
           icon="inbox"
           title="No tasks found"
-          description={searchQuery || filterStatus !== 'all' || filterPriority !== 'all' 
-            ? "Try adjusting your search or filters" 
+          description={searchQuery || filterStatus !== 'all' || filterPriority !== 'all'
+            ? "Try adjusting your search or filters"
             : "You don't have any tasks yet. Create your first task to get started!"}
-          actionText={searchQuery || filterStatus !== 'all' || filterPriority !== 'all' 
-            ? "Clear Filters" 
+          actionText={searchQuery || filterStatus !== 'all' || filterPriority !== 'all'
+            ? "Clear Filters"
             : "Create Task"}
           onAction={() => {
             setSearchQuery('');
@@ -181,7 +181,7 @@ const TaskList = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredAndSortedTasks.map(task => (
           <TaskCard
-            key={task.id}
+            key={task._id}
             task={task}
             onEdit={onEdit}
             onDelete={onDelete}
