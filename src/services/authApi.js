@@ -18,34 +18,34 @@ const authApi = {
   },
 
   // Get current user profile
-  getProfile: () => {
-    return axiosInstance.get('/auth/profile');
+ getProfile: () => {
+    return axiosInstance.get("/auth/me");
   },
 
   // Update user profile
-  updateProfile: (userData) => {
-    return axiosInstance.put('/auth/profile', userData);
-  },
+//   updateProfile: (userData) => {
+//     return axiosInstance.put('/auth/profile', userData);
+//   },
 
-  // Change password
-  changePassword: (passwordData) => {
-    return axiosInstance.post('/auth/change-password', passwordData);
-  },
+//   // Change password
+//   changePassword: (passwordData) => {
+//     return axiosInstance.post('/auth/change-password', passwordData);
+//   },
 
-  // Request password reset
-  forgotPassword: (email) => {
-    return axiosInstance.post('/auth/forgot-password', { email });
-  },
+//   // Request password reset
+//   forgotPassword: (email) => {
+//     return axiosInstance.post('/auth/forgot-password', { email });
+//   },
 
-  // Reset password with token
-  resetPassword: (token, passwordData) => {
-    return axiosInstance.post(`/auth/reset-password/${token}`, passwordData);
-  },
+//   // Reset password with token
+//   resetPassword: (token, passwordData) => {
+//     return axiosInstance.post(`/auth/reset-password/${token}`, passwordData);
+//   },
 
-  // Refresh access token
-  refreshToken: (refreshToken) => {
-    return axiosInstance.post('/auth/refresh-token', { refreshToken });
-  },
+//   // Refresh access token
+//   refreshToken: (refreshToken) => {
+//     return axiosInstance.post('/auth/refresh-token', { refreshToken });
+//   },
 };
 
 export default authApi;

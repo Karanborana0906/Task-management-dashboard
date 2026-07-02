@@ -60,26 +60,43 @@ const Register = () => {
     setTouched(prev => ({ ...prev, [name]: true }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
-    
-    setIsLoading(true);
-    
-    try {
-      const result = await register(formData);
-      if (result.success) {
-        navigate('/dashboard');
-      } else {
-        setErrors({ email: result.error || 'Registration failed' });
-      }
-    } catch (error) {
-      setErrors({ email: 'Registration failed. Please try again.' });
-    } finally {
-      setIsLoading(false);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  console.log("Submit clicked");
+
+  if (!validateForm()) {
+    console.log("Validation Failed");
+    return;
+  }
+
+  console.log("Validation Passed");
+  console.log(formData);
+
+  setIsLoading(true);
+
+  try {
+    console.log("Calling register...");
+
+    const result = await register(formData);
+
+    console.log("Register Result:", result);
+
+    if (result.success) {
+      console.log("Navigate Dashboard");
+      navigate("/dashboard");
+    } else {
+      setErrors({ email: result.error });
     }
-  };
+  } catch (error) {
+    console.log(error);
+    setErrors({
+      email: "Registration failed",
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-50 p-4 sm:p-6">

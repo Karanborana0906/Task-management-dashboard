@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FiFilter } from 'react-icons/fi';
 import TaskCard from './TaskCard';
 import { SearchBar, FilterDropdown, SortDropdown, EmptyState, Loader, Button, Badge } from '../common';
@@ -10,6 +11,7 @@ const TaskList = ({
   isLoading = false,
   className = '' 
 }) => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [filterPriority, setFilterPriority] = useState('all');
@@ -50,7 +52,7 @@ const TaskList = ({
           comparison = new Date(b.createdAt) - new Date(a.createdAt);
           break;
         case 'priority':
-          const priorityOrder = { high: 3, medium: 2, low: 1 };
+          const priorityOrder = { High: 3, Medium: 2, Low: 1 };
           comparison = priorityOrder[b.priority] - priorityOrder[a.priority];
           break;
         case 'title':
@@ -81,21 +83,27 @@ const TaskList = ({
 
   // Empty state
   if (filteredAndSortedTasks.length === 0) {
+    const hasFilters = searchQuery || filterStatus !== 'all' || filterPriority !== 'all';
+    
     return (
       <div className={className}>
         <EmptyState
           icon="inbox"
           title="No tasks found"
-          description={searchQuery || filterStatus !== 'all' || filterPriority !== 'all' 
+          description={hasFilters 
             ? "Try adjusting your search or filters" 
             : "You don't have any tasks yet. Create your first task to get started!"}
-          actionText={searchQuery || filterStatus !== 'all' || filterPriority !== 'all' 
+          actionText={hasFilters 
             ? "Clear Filters" 
             : "Create Task"}
           onAction={() => {
-            setSearchQuery('');
-            setFilterStatus('all');
-            setFilterPriority('all');
+            if (hasFilters) {
+              setSearchQuery('');
+              setFilterStatus('all');
+              setFilterPriority('all');
+            } else {
+              navigate('/create-task');
+            }
           }}
         />
       </div>
@@ -181,7 +189,7 @@ const TaskList = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredAndSortedTasks.map(task => (
           <TaskCard
-            key={task.id}
+            key={task._id}
             task={task}
             onEdit={onEdit}
             onDelete={onDelete}

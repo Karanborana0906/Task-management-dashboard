@@ -7,10 +7,13 @@ import CreateTask from './pages/CreateTask';
 import EditTask from './pages/EditTask';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
-    <Routes>
+    <>
+      <Toaster position="top-right" />
+      <Routes>
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
@@ -47,6 +50,7 @@ function App() {
       {/* 404 Route */}
       <Route path="*" element={<NotFound />} />
     </Routes>
+    </>
   );
 }
 
