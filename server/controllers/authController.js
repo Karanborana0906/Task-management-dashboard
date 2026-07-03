@@ -130,4 +130,47 @@ const logout = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getProfile, logout };
+// ─────────────────────────────────────────────────────────────────────────────
+// @desc    Update currently logged-in user's profile name
+// @route   PUT /api/auth/profile
+// @access  Private
+// ─────────────────────────────────────────────────────────────────────────────
+const updateProfile = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+
+    if (!name || name.trim() === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Name is required.",
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    user.name = name;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully.",
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, getProfile, logout, updateProfile };

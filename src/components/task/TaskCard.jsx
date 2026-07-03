@@ -31,15 +31,13 @@ const TaskCard = ({
     Completed: "success",
   };
 
-  { status }
-
   const taskIsOverdue = isOverdue(dueDate, status);
 
   return (
-    <Card className={`card-hover p-6 transition-all duration-200 ${className}`}>
+    <Card className={`card-hover p-7 sm:p-8 transition-all duration-200 ${className}`}>
       {/* Header with Title and Badges */}
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
-        <h3 className="text-base sm:text-lg font-semibold text-neutral-900 flex-1 leading-tight line-clamp-2">{title}</h3>
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-5">
+        <h3 className="text-lg sm:text-xl font-bold text-neutral-900 dark:text-neutral-50 flex-1 leading-snug line-clamp-2">{title}</h3>
         <div className="flex items-center gap-2 flex-shrink-0">
           <Badge variant={priorityColors[priority] || 'secondary'}>
             {priority}
@@ -51,30 +49,30 @@ const TaskCard = ({
       </div>
 
       {/* Description */}
-      <p className="text-neutral-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+      <p className="text-neutral-600 dark:text-neutral-400 text-sm sm:text-base mb-6 line-clamp-3 leading-relaxed">
         {description}
       </p>
 
       {/* Dates */}
-      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 mb-4 text-sm">
-        <div className={`flex items-center gap-2 ${taskIsOverdue ? 'text-danger-600' : 'text-neutral-500'}`}>
+      <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 mb-6 text-sm sm:text-base">
+        <div className={`flex items-center gap-2 ${taskIsOverdue ? 'text-danger-600 dark:text-danger-400' : 'text-neutral-500 dark:text-neutral-450'}`}>
           <FiCalendar className="text-base flex-shrink-0" />
           <span className="truncate">Due: {formatDate(dueDate)}</span>
-          {taskIsOverdue && <span className="text-danger-600 font-medium flex-shrink-0">(Overdue)</span>}
+          {taskIsOverdue && <span className="text-danger-600 dark:text-danger-450 font-medium flex-shrink-0">(Overdue)</span>}
         </div>
-        <div className="flex items-center gap-2 text-neutral-500">
+        <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-450">
           <FiClock className="text-base flex-shrink-0" />
           <span className="truncate">Created: {formatDate(createdAt)}</span>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-2 pt-4 border-t border-neutral-200">
+      <div className="flex items-center gap-3 pt-5 border-t border-neutral-200 dark:border-neutral-800">
         <Button
           variant="secondary"
           size="sm"
           onClick={() => onEdit(_id)}
-          className="flex-1 flex items-center justify-center gap-2 min-w-0"
+          className="flex-1 flex items-center justify-center gap-2 min-w-0 py-2"
         >
           <FiEdit2 className="text-sm flex-shrink-0" />
           <span className="truncate">Edit</span>
@@ -83,7 +81,7 @@ const TaskCard = ({
           variant="danger"
           size="sm"
           onClick={() => onDelete(_id)}
-          className="flex-1 flex items-center justify-center gap-2 min-w-0"
+          className="flex-1 flex items-center justify-center gap-2 min-w-0 py-2"
         >
           <FiTrash2 className="text-sm flex-shrink-0" />
           <span className="truncate">Delete</span>

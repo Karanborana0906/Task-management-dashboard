@@ -99,14 +99,14 @@ const Register = () => {
 };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50 p-4 sm:p-6">
+    <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950 p-4 sm:p-6">
       <Card className="p-6 sm:p-8 w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <span className="text-white font-bold text-3xl">T</span>
           </div>
-          <h1 className="text-2xl font-bold text-neutral-900 mb-2">Create Account</h1>
-          <p className="text-neutral-600">Sign up to get started</p>
+          <h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-50 mb-2">Create Account</h1>
+          <p className="text-neutral-600 dark:text-neutral-400">Sign up to get started</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">

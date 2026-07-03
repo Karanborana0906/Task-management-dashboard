@@ -53,66 +53,65 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  setToken(null);
-  setUser(null);
+  // Logout function
+  const logout = () => {
+    setToken(null);
+    setUser(null);
 
-  // Clear localStorage
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
+    // Clear localStorage
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
 
-  // TODO: Call logout API when backend is ready
-  // await authApi.logout();
-};
+  // Register function
+  const register = async (userData) => {
+    try {
+      const response = await authApi.register(userData);
 
-// Register function
-const register = async (userData) => {
-  try {
-    const response = await authApi.register(userData);
+      const newUser = response.data.data;
+      const token = newUser.token;
 
-    const newUser = response.data.data;
-    const token = newUser.token;
+      setToken(token);
+      setUser(newUser);
 
-    setToken(token);
-    setUser(newUser);
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(newUser));
 
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(newUser));
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error:
+          error.response?.data?.message || "Registration failed",
+      };
+    }
+  };
 
-    return { success: true };
-  } catch (error) {
-    return {
-      success: false,
-      error:
-        error.response?.data?.message || "Registration failed",
-    };
-  }
-};
+  // Update user function
+  const updateUser = (userData) => {
+    const updatedUser = { ...user, ...userData };
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
 
-// Update user function
-const updateUser = (userData) => {
-  const updatedUser = { ...user, ...userData };
-  setUser(updatedUser);
-  localStorage.setItem("user", JSON.stringify(updatedUser));
-};
+  const isAuthenticated = () => !!token;
 
-const isAuthenticated = () => !!token;
+  const value = {
+    user,
+    token,
+    isLoading,
+    login,
+    register,
+    logout,
+    updateUser,
+    isAuthenticated,
+  };
 
-const value = {
-  user,
-  token,
-  isLoading,
-  login,
-  register,
-  logout,
-  updateUser,
-  isAuthenticated,
-};
-
-return (
-  <AuthContext.Provider value={value}>
-    {children}
-  </AuthContext.Provider>
-);
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
@@ -126,3 +125,4 @@ export const useAuth = () => {
 };
 
 export default AuthContext;
+// File updated to trigger hot-reload refresh

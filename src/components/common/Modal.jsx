@@ -40,12 +40,12 @@ const Modal = ({
       />
       
       {/* Modal Content */}
-      <div className={`relative bg-white rounded-2xl shadow-soft-xl w-full ${sizeClasses[size]} max-h-[90vh] overflow-hidden flex flex-col`}>
+      <div className={`relative bg-white dark:bg-neutral-900 rounded-2xl shadow-soft-xl w-full ${sizeClasses[size]} max-h-[90vh] overflow-hidden flex flex-col border border-neutral-200 dark:border-neutral-800`}>
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-6 border-b border-neutral-200">
+          <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800">
             {title && (
-              <h2 className="text-xl font-semibold text-neutral-900">{title}</h2>
+              <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50">{title}</h2>
             )}
             {showCloseButton && (
               <Button

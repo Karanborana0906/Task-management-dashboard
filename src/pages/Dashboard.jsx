@@ -1,10 +1,12 @@
 
-import { FiCalendar, FiCheckCircle, FiClock, FiList } from 'react-icons/fi';
+import { FiCalendar, FiCheckCircle, FiClock, FiList, FiPlus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import StatCard from '../components/task/StatCard';
 import TaskList from '../components/task/TaskList';
+import StatsCharts from '../components/task/StatsCharts';
 import { useAuth } from '../context/AuthContext';
+import { Button } from '../components/common';
 import React, { useEffect, useState } from "react";
 import taskApi from "../services/taskApi";
 
@@ -84,9 +86,6 @@ const Dashboard = () => {
       color: "success",
       trend: { value: 0, positive: true },
     },
-    { title: "Pending", value: tasks.filter((t) => t.status === "Pending").length, icon: FiClock, color: "warning" },
-    { title: "In Progress", value: tasks.filter((t) => t.status === "In Progress").length, icon: FiCalendar, color: "primary" },
-    { title: "Completed", value: tasks.filter((t) => t.status === "Completed").length, icon: FiCheckCircle, color: "success" },
   ];
 
   const handleEdit = (taskId) => {
@@ -108,21 +107,34 @@ const Dashboard = () => {
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-3xl font-bold">
+              <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-50">
                 Welcome back, {user?.name}!
               </h1>
-              <p>{currentDate}</p>
+              <p className="text-neutral-500 dark:text-neutral-400 mt-1 text-sm font-medium">{currentDate}</p>
+            </div>
+            <div>
+              <Button
+                variant="primary"
+                onClick={() => navigate('/create-task')}
+                className="flex items-center gap-2"
+              >
+                <FiPlus className="text-lg" />
+                <span>Create Task</span>
+              </Button>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {stats.map((stat, index) => (
               <StatCard key={index} {...stat} />
             ))}
           </div>
 
+          {/* Statistics Visual Charts */}
+          <StatsCharts tasks={tasks} />
+
           {/* Task List Section */}
-          <div className="mt-8">
+          <div className="mt-10">
             <TaskList
               tasks={tasks}
               onEdit={handleEdit}
