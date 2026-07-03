@@ -3,7 +3,7 @@
 
 const express = require("express");
 const { body } = require("express-validator");
-const { register, login, getProfile, logout } = require("../controllers/authController");
+const { register, login, getProfile, logout, updateProfile } = require("../controllers/authController");
 const { protect } = require("../middleware/authMiddleware");
 const { validate } = require("../middleware/validateMiddleware");
 
@@ -63,5 +63,8 @@ router.get("/me", protect, getProfile);
 
 // POST /api/auth/logout  (protected)
 router.post("/logout", protect, logout);
+
+// PUT /api/auth/profile  (protected)
+router.put("/profile", protect, updateProfile);
 
 module.exports = router;

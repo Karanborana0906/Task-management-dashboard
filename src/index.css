@@ -4,33 +4,33 @@
 
 @layer base {
   * {
-    @apply border-neutral-200;
+    @apply border-neutral-200 dark:border-neutral-800;
   }
   
   body {
-    @apply bg-neutral-50 text-neutral-900 font-sans antialiased;
+    @apply bg-neutral-50 text-neutral-900 font-sans antialiased dark:bg-neutral-950 dark:text-neutral-50;
   }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed dark:focus:ring-offset-neutral-900;
   }
   
   .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 dark:bg-primary-500 dark:hover:bg-primary-600;
   }
   
   .btn-secondary {
-    @apply bg-white text-neutral-700 border border-neutral-300 hover:bg-neutral-50 focus:ring-primary-500;
+    @apply bg-white text-neutral-700 border border-neutral-300 hover:bg-neutral-50 focus:ring-primary-500 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-700;
   }
   
   .btn-danger {
-    @apply bg-danger-600 text-white hover:bg-danger-700 focus:ring-danger-500;
+    @apply bg-danger-600 text-white hover:bg-danger-700 focus:ring-danger-500 dark:bg-danger-500 dark:hover:bg-danger-600;
   }
   
   .btn-success {
-    @apply bg-success-600 text-white hover:bg-success-700 focus:ring-success-500;
+    @apply bg-success-600 text-white hover:bg-success-700 focus:ring-success-500 dark:bg-success-500 dark:hover:bg-success-600;
   }
   
   .btn-sm {
@@ -42,19 +42,19 @@
   }
   
   .card {
-    @apply bg-white rounded-xl shadow-card border border-neutral-200;
+    @apply bg-white rounded-xl shadow-card border border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800;
   }
   
   .card-hover {
-    @apply bg-white rounded-xl shadow-card border border-neutral-200 hover:shadow-card-hover transition-shadow duration-200;
+    @apply bg-white rounded-xl shadow-card border border-neutral-200 hover:shadow-card-hover dark:bg-neutral-900 dark:border-neutral-800 dark:hover:border-neutral-700 transition-shadow duration-200;
   }
   
   .input {
-    @apply w-full px-4 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+    @apply w-full px-4 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:placeholder-neutral-500;
   }
   
   .input-error {
-    @apply border-danger-500 focus:ring-danger-500;
+    @apply border-danger-500 focus:ring-danger-500 dark:border-danger-500 dark:focus:ring-danger-500;
   }
   
   .badge {

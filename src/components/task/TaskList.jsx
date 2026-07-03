@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiFilter } from 'react-icons/fi';
 import TaskCard from './TaskCard';
 import { SearchBar, FilterDropdown, SortDropdown, EmptyState, Loader, Button, Badge } from '../common';
+import { useDebounce } from '../../hooks/useDebounce';
 
 const TaskList = ({
   tasks = [],
@@ -17,16 +18,23 @@ const TaskList = ({
   const [filterPriority, setFilterPriority] = useState('all');
   const [sortBy, setSortBy] = useState('dueDate');
   const [sortOrder, setSortOrder] = useState('asc');
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
+
+  // Debounced search query
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
   // Filter and sort tasks
   const filteredAndSortedTasks = useMemo(() => {
     let filtered = [...tasks];
 
     // Apply search filter
-    if (searchQuery) {
+    if (debouncedSearchQuery) {
       filtered = filtered.filter(task =>
-        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        task.description.toLowerCase().includes(searchQuery.toLowerCase())
+        task.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+        task.description.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
       );
     }
 
@@ -66,7 +74,21 @@ const TaskList = ({
     });
 
     return filtered;
-  }, [tasks, searchQuery, filterStatus, filterPriority, sortBy, sortOrder]);
+  }, [tasks, debouncedSearchQuery, filterStatus, filterPriority, sortBy, sortOrder]);
+
+  // Total pages calculation
+  const totalPages = Math.ceil(filteredAndSortedTasks.length / itemsPerPage);
+
+  // Reset page to 1 if filter makes current page invalid
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchQuery, filterStatus, filterPriority, sortBy, sortOrder]);
+
+  // Paginated subset of tasks
+  const paginatedTasks = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedTasks.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredAndSortedTasks, currentPage, itemsPerPage]);
 
   const handleSortToggle = () => {
     setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
@@ -175,7 +197,7 @@ const TaskList = ({
 
       {/* Task Count */}
       <div className="mb-4 flex items-center gap-2">
-        <span className="text-sm text-neutral-600">
+        <span className="text-sm text-neutral-600 dark:text-neutral-400">
           Showing {filteredAndSortedTasks.length} task{filteredAndSortedTasks.length !== 1 ? 's' : ''}
         </span>
         {(searchQuery || filterStatus !== 'all' || filterPriority !== 'all') && (
@@ -187,7 +209,7 @@ const TaskList = ({
 
       {/* Task Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredAndSortedTasks.map(task => (
+        {paginatedTasks.map(task => (
           <TaskCard
             key={task._id}
             task={task}
@@ -196,6 +218,45 @@ const TaskList = ({
           />
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between border-t border-neutral-200 dark:border-neutral-800 pt-6 mt-8 flex-col sm:flex-row gap-4">
+          <div className="text-sm text-neutral-600 dark:text-neutral-400">
+            Showing <span className="font-semibold text-neutral-900 dark:text-neutral-100">{Math.min((currentPage - 1) * itemsPerPage + 1, filteredAndSortedTasks.length)}</span> to{' '}
+            <span className="font-semibold text-neutral-900 dark:text-neutral-100">{Math.min(currentPage * itemsPerPage, filteredAndSortedTasks.length)}</span> of{' '}
+            <span className="font-semibold text-neutral-900 dark:text-neutral-100">{filteredAndSortedTasks.length}</span> tasks
+          </div>
+          <div className="inline-flex items-center gap-2 flex-wrap">
+            <Button
+              variant="secondary"
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1.5 text-sm"
+            >
+              Previous
+            </Button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <Button
+                key={page}
+                variant={currentPage === page ? 'primary' : 'secondary'}
+                onClick={() => setCurrentPage(page)}
+                className="w-9 h-9 flex items-center justify-center p-0 font-bold text-sm"
+              >
+                {page}
+              </Button>
+            ))}
+            <Button
+              variant="secondary"
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1.5 text-sm"
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

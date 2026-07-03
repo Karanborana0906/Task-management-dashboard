@@ -23,9 +23,9 @@ const authApi = {
   },
 
   // Update user profile
-//   updateProfile: (userData) => {
-//     return axiosInstance.put('/auth/profile', userData);
-//   },
+  updateProfile: (userData) => {
+    return axiosInstance.put('/auth/profile', userData);
+  },
 
 //   // Change password
 //   changePassword: (passwordData) => {

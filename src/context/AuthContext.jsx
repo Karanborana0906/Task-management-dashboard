@@ -64,55 +64,55 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
   };
 
-// Register function
-const register = async (userData) => {
-  try {
-    const response = await authApi.register(userData);
+  // Register function
+  const register = async (userData) => {
+    try {
+      const response = await authApi.register(userData);
 
-    const newUser = response.data.data;
-    const token = newUser.token;
+      const newUser = response.data.data;
+      const token = newUser.token;
 
-    setToken(token);
-    setUser(newUser);
+      setToken(token);
+      setUser(newUser);
 
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(newUser));
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(newUser));
 
-    return { success: true };
-  } catch (error) {
-    return {
-      success: false,
-      error:
-        error.response?.data?.message || "Registration failed",
-    };
-  }
-};
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error:
+          error.response?.data?.message || "Registration failed",
+      };
+    }
+  };
 
-// Update user function
-const updateUser = (userData) => {
-  const updatedUser = { ...user, ...userData };
-  setUser(updatedUser);
-  localStorage.setItem("user", JSON.stringify(updatedUser));
-};
+  // Update user function
+  const updateUser = (userData) => {
+    const updatedUser = { ...user, ...userData };
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
 
-const isAuthenticated = () => !!token;
+  const isAuthenticated = () => !!token;
 
-const value = {
-  user,
-  token,
-  isLoading,
-  login,
-  register,
-  logout,
-  updateUser,
-  isAuthenticated,
-};
+  const value = {
+    user,
+    token,
+    isLoading,
+    login,
+    register,
+    logout,
+    updateUser,
+    isAuthenticated,
+  };
 
-return (
-  <AuthContext.Provider value={value}>
-    {children}
-  </AuthContext.Provider>
-);
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export const useAuth = () => {
