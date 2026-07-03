@@ -1,3 +1,4 @@
+<<<<<<< ours
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiPlus } from 'react-icons/fi';
@@ -6,6 +7,16 @@ import TaskForm from '../components/task/TaskForm';
 import { PageHeading, Button, Breadcrumb } from '../components/common';
 import toast from 'react-hot-toast';
 import taskApi from '../services/taskApi';
+=======
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FiPlus } from "react-icons/fi";
+import MainLayout from "../layouts/MainLayout";
+import TaskForm from "../components/task/TaskForm";
+import { PageHeading, Button, Breadcrumb } from "../components/common";
+import toast from "react-hot-toast";
+import taskApi from "../services/taskApi";
+>>>>>>> theirs
 
 const CreateTask = () => {
   const navigate = useNavigate();
@@ -13,6 +24,7 @@ const CreateTask = () => {
 
   const handleSubmit = async (formData) => {
     setIsLoading(true);
+<<<<<<< ours
     try {
       await taskApi.createTask(formData);
       toast.success('Task created successfully!');
@@ -20,27 +32,46 @@ const CreateTask = () => {
     } catch (error) {
       const message = error?.response?.data?.message || 'Failed to create task. Please try again.';
       toast.error(message);
+=======
+
+    try {
+      console.log("Creating Task:", formData);
+
+      const response = await taskApi.createTask(formData);
+
+      console.log("Create Task Response:", response.data);
+
+      toast.success(response.data.message || "Task created successfully!");
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Create Task Error:", error);
+
+      toast.error(
+        error.response?.data?.message || "Failed to create task"
+      );
+>>>>>>> theirs
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleCancel = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   return (
     <MainLayout>
       <div className="p-4 sm:p-6">
         <div className="max-w-3xl mx-auto">
-          {/* Page Header */}
+
           <PageHeading
             title="Create Task"
             subtitle="Create a new task to track your work"
             action={
               <Button
                 variant="primary"
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate("/dashboard")}
                 className="flex items-center gap-2"
               >
                 <FiPlus />
@@ -49,16 +80,14 @@ const CreateTask = () => {
             }
           />
 
-          {/* Breadcrumb */}
           <Breadcrumb
             items={[
-              { label: 'Dashboard', href: '/dashboard' },
-              { label: 'Create Task' },
+              { label: "Dashboard", href: "/dashboard" },
+              { label: "Create Task" },
             ]}
             className="mb-6"
           />
 
-          {/* Task Form */}
           <TaskForm
             onSubmit={handleSubmit}
             onCancel={handleCancel}
