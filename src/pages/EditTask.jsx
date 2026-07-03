@@ -6,7 +6,6 @@ import taskApi from "../services/taskApi";
 import TaskForm from '../components/task/TaskForm';
 import { PageHeading, Button, Loader, Breadcrumb } from '../components/common';
 import toast from 'react-hot-toast';
-import taskApi from '../services/taskApi';
 
 const EditTask = () => {
   const { id } = useParams();

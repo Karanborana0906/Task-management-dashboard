@@ -1,4 +1,4 @@
-
+import React, { useEffect, useState } from 'react';
 import { FiCalendar, FiCheckCircle, FiClock, FiList, FiPlus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
@@ -7,9 +7,7 @@ import TaskList from '../components/task/TaskList';
 import StatsCharts from '../components/task/StatsCharts';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/common';
-import React, { useEffect, useState } from "react";
-import taskApi from "../services/taskApi";
-import { Button } from '../components/common';
+import taskApi from '../services/taskApi';
 
 
 const Dashboard = () => {
@@ -123,14 +121,6 @@ const Dashboard = () => {
                 <span>Create Task</span>
               </Button>
             </div>
-            <Button
-              variant="primary"
-              onClick={() => navigate('/create-task')}
-              className="flex items-center gap-2"
-            >
-              <FiPlus />
-              <span>Create Task</span>
-            </Button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
